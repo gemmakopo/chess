@@ -20,7 +20,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] lo = new String[2]; 
     //     lo[0] = "-f";
-    //      lo[1] = "captureAndPromote.in";
+    //      lo[1] = "captureDrop.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -221,7 +221,33 @@ public class miniShogi
             }
             else if (Pattern.compile("drop [kgsbrp] [a-e][1-5]").matcher(f.get(i)).matches()) 
             {
-
+                if(player1)
+                {
+                    System.out.println("lower player action: " + f.get(i));
+                }
+                else
+                {
+                    System.out.println("UPPER player action: " + f.get(i));
+                }
+                if(!player1)
+                {
+                    msBoard.printError(player1, "");
+                }
+            }
+            else if (Pattern.compile("drop [KGSBRP] [a-e][1-5]").matcher(f.get(i)).matches()) 
+            {
+                if(player1)
+                {
+                    System.out.println("lower player action: " + f.get(i));
+                }
+                else
+                {
+                    System.out.println("UPPER player action: " + f.get(i));
+                }
+                if(player1)
+                {
+                    msBoard.printError(player1, "");
+                }
             }
             else 
             {
