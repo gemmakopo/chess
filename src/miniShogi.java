@@ -19,9 +19,9 @@ public class miniShogi
     board msBoard;
 
     public static void main(String[] args) throws Exception{
-    //    String[] lo = new String[2]; 
-    //     lo[0] = "-f";
-    //      lo[1] = "drop.in";
+    //    String[] a = new String[2]; 
+    //     args[0] = "-f";
+    //      a[1] = "lowerStuckPawnDrop.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -274,7 +274,7 @@ public class miniShogi
                }
                if(toDrop.getPieceType().equals("p")|| toDrop.getPieceType().endsWith("P"))
                {
-                    if(msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()+1] != null && msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()+1].getPieceType().equals("K"))
+                    if(toDrop.getRow()>=4 ||( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()+1] != null && msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()+1].getPieceType().equals("K")))
                     {
                         msBoard.player2Captured.add(arrayPos, toDrop);
                         msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
@@ -348,7 +348,7 @@ public class miniShogi
                 }
                 if(toDrop.getPieceType().equals("p")|| toDrop.getPieceType().endsWith("P"))
                 {
-                     if(msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()-1] != null && msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()-1].getPieceType().equals("k"))
+                     if(toDrop.getRow() ==0 ||( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()-1] != null && msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()-1].getPieceType().equals("k")))
                      {
                         msBoard.player1Captured.add(arrayPos, toDrop);
                         msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
