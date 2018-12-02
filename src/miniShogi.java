@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 import javax.lang.model.util.ElementScanner6;
 
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
+import sun.util.logging.resources.logging;
 
 import java.io.*;
 
@@ -20,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] lo = new String[2]; 
     //     lo[0] = "-f";
-    //      lo[1] = "doublePawnDrop.in";
+    //      lo[1] = "captureDrop.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -219,24 +220,21 @@ public class miniShogi
                     msBoard.promote(j[1]);
                 }
             }
-            else if (Pattern.compile("drop [kgsbrp] [a-e][1-5]").matcher(f.get(i)).matches()) 
+            else if (Pattern.compile("drop [kgsbrp] [a-e][1-5]").matcher(f.get(i)).matches() && player1) 
             {
-                if(player1)
+                if(f.size()-1 == i)
                 {
                     System.out.println("lower player action: " + f.get(i));
                 }
-                else
-                {
-                    System.out.println("UPPER player action: " + f.get(i));
-                }
-                if(!player1)
-                {
-                    msBoard.printError(player1, "");
-                }
+                
                String pieceT =(f.get(i).substring(5, 6));
                piece toDrop = null;
                int pieceCol = msBoard.findVal( f.get(i).substring(7, 8));
                int pieceRow = msBoard.findVal( f.get(i).substring(8));
+               if(msBoard.gameBoard[pieceCol][pieceRow] != null)
+               {
+                   msBoard.printError(player1, "");
+               }
 
                for(int n =0; n<msBoard.player2Captured.size(); n++)
                {
@@ -251,9 +249,10 @@ public class miniShogi
                         {
                             for(int y=0; y<5; y++)
                             {
-                                if(msBoard.gameBoard[toDrop.getColumn()][y].getPieceType().equals(toDrop.getPieceType()))
+                                if(msBoard.gameBoard[toDrop.getColumn()][y]!=null && msBoard.gameBoard[toDrop.getColumn()][y].getPlayer()==1
+                                 && msBoard.gameBoard[toDrop.getColumn()][y].getPieceType().equals(toDrop.getPieceType()))
                                 {
-                                    msBoard.printError(player1, "");
+                                    msBoard.printError(player1, null);
                                 }
                             }
                         }
@@ -269,27 +268,23 @@ public class miniShogi
                     msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
                }
             }
-            else if (Pattern.compile("drop [KGSBRP] [a-e][1-5]").matcher(f.get(i)).matches()) 
+            else if (Pattern.compile("drop [kgsprb] [a-e][1-5]").matcher(f.get(i)).matches() && !player1) 
             {
-                if(player1)
-                {
-                    System.out.println("lower player action: " + f.get(i));
-                }
-                else
+                if(f.size()-1 == i)
                 {
                     System.out.println("UPPER player action: " + f.get(i));
-                }
-                if(player1)
-                {
-                    msBoard.printError(player1, "");
                 }
                 String pieceT =(f.get(i).substring(5, 6));
                 piece toDrop = null;
                 int pieceCol = msBoard.findVal( f.get(i).substring(7, 8));
                 int pieceRow = msBoard.findVal( f.get(i).substring(8));
+                if(msBoard.gameBoard[pieceCol][pieceRow] != null)
+                {
+                    msBoard.printError(player1, "");
+                }
                 for(int n =0; n<msBoard.player1Captured.size(); n++)
                 {
-                     if(msBoard.player1Captured.get(n).getPieceType().equals(pieceT))
+                     if(msBoard.player1Captured.get(n).getPieceType().equals(pieceT.toUpperCase()))
                      {
                          toDrop = msBoard.player1Captured.get(n);
                          toDrop.setColumn(pieceCol);
@@ -298,9 +293,11 @@ public class miniShogi
                          {
                              for(int y=0; y<5; y++)
                              {
-                                 if(msBoard.gameBoard[toDrop.getColumn()][y].getPieceType().equals(toDrop.getPieceType()))
+                                 if(msBoard.gameBoard[toDrop.getColumn()][y]!=null  && msBoard.gameBoard[toDrop.getColumn()][y].getPlayer()==2
+                                 && msBoard.gameBoard[toDrop.getColumn()][y].getPieceType().equals(toDrop.getPieceType().toLowerCase()))
                                  {
-                                     msBoard.printError(player1, "");
+                                     
+                                    msBoard.printError(player1, "");
                                  }
                              }
                          }
