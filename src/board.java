@@ -216,7 +216,7 @@ public class board {
             return true;
         if (player1) 
         {
-            if (pawn1.getCaptured() ==false && pawn1.validateMove(c, r)) 
+            if (pawn1.getCaptured() ==false && (pawn1.validateMove(c, r))) 
             {
                 return true;
             } 
@@ -292,6 +292,14 @@ public class board {
             if(validateAllMoves(player1, c, r))
             {
                 toReturn = validateKingsMoves(player1, c, r);
+                if(toReturn.size()==0)
+                {
+                    if(player1)
+                        System.out.println("lower player wins.  Checkmate.");
+                    else
+                         System.out.println("UPPER player wins.  Checkmate.");
+                    System.exit(0);
+                }
             }
         }
         return toReturn;

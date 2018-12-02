@@ -20,7 +20,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] lo = new String[2]; 
     //     lo[0] = "-f";
-    //      lo[1] = "captureDrop.in";
+    //      lo[1] = "checkmate.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -134,7 +134,7 @@ public class miniShogi
         
         for(int i = 0; i< f.size(); i++)
         {
-          // msBoard.drawBoard();///////////////////////////
+         // msBoard.drawBoard();///////////////////////////
             boolean inCheck=false;
             if (endPlays == 200) 
             {
