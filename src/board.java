@@ -104,7 +104,7 @@ public class board {
         else 
             return null;
     }
-    public piece[] movePieces(boolean player1, String[] h, String moveText) {
+    public piece[] movePieces(boolean player1, String[] h, String moveText, boolean promote) {
         int[] result = new int[4];
         piece[] toReturn = new piece[2];
         this.moveText=moveText;
@@ -114,10 +114,18 @@ public class board {
         result[3] = findVal(h[3]);
 
         piece init = gameBoard[result[0]][result[1]];
+      
         
 
         if (init != null) 
         {
+            if(promote)
+            {
+                if(init.getPieceType().equals("k") || init.getPieceType().equals("K")|| init.getPieceType().equals("g") || init.getPieceType().equals("G"))
+                {
+                    this.printError(player1, "");
+                }
+            }
             toReturn[0]=init;
             if (player1 && (init.getPlayer() != 1)) 
             {
@@ -345,7 +353,7 @@ public class board {
         }
         return toReturn;
     }
-    public void promote(piece a)
+    public void promote(piece a, boolean player1)
     {
         a.setPromoted(true);
         gameBoard[a.getColumn()][a.getRow()]=a;

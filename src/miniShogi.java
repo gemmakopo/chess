@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] lo = new String[2]; 
     //     lo[0] = "-f";
-    //      lo[1] = "dropEmptyHand.in";
+    //      lo[1] = "goldPromotion.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -132,10 +132,11 @@ public class miniShogi
     }
     private void makeMoves(List<String> f)
     {
+   
         
         for(int i = 0; i< f.size(); i++)
         {
-         // msBoard.drawBoard();///////////////////////////
+            //msBoard.drawBoard();///////////////////////////
             boolean inCheck=false;
             if (endPlays == 200) 
             {
@@ -214,10 +215,10 @@ public class miniShogi
                     }
                 }
                 
-                piece[] j = move(player1, f.get(i));
+                piece[] j = move(player1, f.get(i), false);
                 if((j[1].getPieceType().equals("p") && j[1].getRow() ==4)|| (j[1].getPieceType().equals("P") && j[1].getRow() ==0))
                 {
-                    msBoard.promote(j[1]);
+                    msBoard.promote(j[1], player1);
                 }
             }
             else if (Pattern.compile("drop [kgsbrp] [a-e][1-5]").matcher(f.get(i)).matches() && player1) 
@@ -453,10 +454,10 @@ public class miniShogi
                         }
                     }
                     
-                    piece[] j = move(player1, p1Input);
+                    piece[] j = move(player1, p1Input, false);
                     if((j[1].getPieceType().equals("p") && j[1].getRow() ==4)|| (j[1].getPieceType().equals("P") && j[1].getRow() ==0))
                     {
-                        msBoard.promote(j[1]);
+                        msBoard.promote(j[1], player1);
                     }
                 } 
                 else if (Pattern.compile("drop [kgsbrp] [a-e][1-5]").matcher(p1Input).matches()) 
@@ -497,7 +498,7 @@ public class miniShogi
                 }
                 else if (Pattern.compile("move [a-e][1-5] [a-e][1-5]").matcher(p2Input).matches()) 
                 {
-                    piece[] j = move(player1, p2Input);
+                    piece[] j = move(player1, p2Input, false);
                     System.out.println("UPPER player action: " + p2Input);
                     if(inCheck)
                     {
@@ -518,7 +519,7 @@ public class miniShogi
                     
                     if((j[1].getPieceType().equals("p") && j[1].getRow() ==4)|| (j[1].getPieceType().equals("P") && j[1].getRow() ==0))
                     {
-                        msBoard.promote(j[1]);
+                        msBoard.promote(j[1], player1);
                     }
                 }
                 else if (Pattern.compile("drop [kgsbrp] [a-e][1-5]").matcher(p2Input).matches()) 
@@ -546,7 +547,7 @@ public class miniShogi
     }
 
 
-    private piece[] move(boolean player1, String p1Input)
+    private piece[] move(boolean player1, String p1Input, boolean promote)
     {
         p1Input = p1Input.substring(5);
         String[] moves1 = p1Input.split(" ");
@@ -556,24 +557,21 @@ public class miniShogi
         movesToTranslate[2] = moves1[1].substring(0, 1);
         movesToTranslate[3] = moves1[1].substring(1);
 
-        piece[] toReturn = msBoard.movePieces(player1, movesToTranslate, p1Input);
+        piece[] toReturn = msBoard.movePieces(player1, movesToTranslate, p1Input, promote);
 
         return toReturn;
     }
 
     private void promotePiece(boolean player1, String input)
     {
-        piece[] toPromote = move(player1, input);
-        if(toPromote[1].equals("k") || toPromote[1].equals("K")|| toPromote[1].equals("g") || toPromote[1].equals("G"))
-        {
-            msBoard.printError(player1, input);
-        }
+        piece[] toPromote = move(player1, input, true);
+   
         if((toPromote[0].getRow()==4 && toPromote[0].getPlayer() == 1) 
         || (toPromote[1].getRow()==4 && toPromote[1].getPlayer()==1) 
         || (toPromote[0].getRow()==0 && toPromote[0].getPlayer() == 2)
         || (toPromote[1].getRow()==0 && toPromote[1].getPlayer() == 2))
         {
-            msBoard.promote(toPromote[1]);
+            msBoard.promote(toPromote[1], player1);
         }
         else
         {
