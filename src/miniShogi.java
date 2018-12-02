@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] lo = new String[2]; 
     //     lo[0] = "-f";
-    //      lo[1] = "goldPromotion.in";
+    //      lo[1] = "drop.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -241,6 +241,7 @@ public class miniShogi
                    msBoard.printError(player1, "");
                }
                boolean didWeFindAMatch = false;
+               int arrayPos = 0;
                for(int n =0; n<msBoard.player2Captured.size(); n++)
                {
                     if(msBoard.player2Captured.get(n) != null && msBoard.player2Captured.get(n).getPieceType().toLowerCase().equals(pieceT))
@@ -263,6 +264,7 @@ public class miniShogi
                             }
                         }
                         msBoard.player2Captured.remove(n);
+                        arrayPos = n;
                     }
                }
                if(didWeFindAMatch == false)
@@ -276,6 +278,13 @@ public class miniShogi
                if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
                {
                     msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
+                    ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1);
+                    if(checkMateDrops.size()>0)
+                    {
+                        msBoard.player2Captured.add(arrayPos, toDrop);
+                        msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
+                        msBoard.printError(player1, "");
+                    }
                }
             }
             else if (Pattern.compile("drop [kgsprb] [a-e][1-5]").matcher(f.get(i)).matches() && !player1) 
@@ -297,6 +306,7 @@ public class miniShogi
                     msBoard.printError(player1, "");
                 }
                 boolean didWeFindAMatch = false;
+                int arrayPos = 0;
                 for(int n =0; n<msBoard.player1Captured.size(); n++)
                 {
                      if(msBoard.player1Captured.get(n)!= null && msBoard.player1Captured.get(n).getPieceType().equals(pieceT.toUpperCase()))
@@ -318,6 +328,7 @@ public class miniShogi
                              }
                          }
                          msBoard.player1Captured.remove(n);
+                         arrayPos=n;
                      }
                    
                 }
@@ -330,6 +341,13 @@ public class miniShogi
                 if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
                 {
                      msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
+                     ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1);
+                     if(checkMateDrops.size()>0)
+                     {
+                         msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
+                         msBoard.player2Captured.add(arrayPos, toDrop);
+                         msBoard.printError(player1, "");
+                     }
                 }
             }
             else 
