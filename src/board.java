@@ -277,7 +277,7 @@ public class board {
         }
         return false;
     }
-    public ArrayList<String> checkCheckMate(boolean player1) 
+    public ArrayList<String> checkCheckMate(boolean player1, boolean test) 
     {
         ArrayList<String> toReturn = new ArrayList<String>();
         boolean kingIsOnBoard = false;
@@ -304,11 +304,15 @@ public class board {
                 toReturn = validateKingsMoves(player1, c, r);
                 if(toReturn.size()==0)
                 {
+                    if(!test)
+                    {
                     if(player1)
                         System.out.println("lower player wins.  Checkmate.");
                     else
                          System.out.println("UPPER player wins.  Checkmate.");
                     System.exit(0);
+                    }
+                    
                 }
             }
         }

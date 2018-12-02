@@ -25,7 +25,7 @@ public class miniShogi
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
-                miniShogi a = new miniShogi();
+                miniShogi d = new miniShogi();
             }
             else if(args[0].equals("-f"))
             {
@@ -147,7 +147,7 @@ public class miniShogi
             {
                 endPlays++;
             }
-            ArrayList<String> checked = msBoard.checkCheckMate(player1);
+            ArrayList<String> checked = msBoard.checkCheckMate(player1, false);
             Collections.sort(checked, String.CASE_INSENSITIVE_ORDER);
             String kingMove = null;
             if (checked.size() !=0) 
@@ -240,6 +240,7 @@ public class miniShogi
                {
                    msBoard.printError(player1, "");
                }
+               
                boolean didWeFindAMatch = false;
                int arrayPos = 0;
                for(int n =0; n<msBoard.player2Captured.size(); n++)
@@ -271,14 +272,23 @@ public class miniShogi
                {
                    msBoard.printError(player1, "");
                }
+               if(toDrop.getPieceType().equals("p")|| toDrop.getPieceType().endsWith("P"))
+               {
+                    if(msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()+1] != null && msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()+1].getPieceType().equals("K"))
+                    {
+                        msBoard.player2Captured.add(arrayPos, toDrop);
+                        msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
+                        msBoard.printError(player1, "");
+                    }
+               }
                
                toDrop.setPlayer(1);
                toDrop.setCaptured(false);
-               
+             
                if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
                {
                     msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
-                    ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1);
+                    ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1, true);
                     if(checkMateDrops.size()>0)
                     {
                         msBoard.player2Captured.add(arrayPos, toDrop);
@@ -336,12 +346,21 @@ public class miniShogi
                 {
                     msBoard.printError(player1, "");
                 }
+                if(toDrop.getPieceType().equals("p")|| toDrop.getPieceType().endsWith("P"))
+                {
+                     if(msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()-1] != null && msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()-1].getPieceType().equals("k"))
+                     {
+                        msBoard.player1Captured.add(arrayPos, toDrop);
+                        msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
+                        msBoard.printError(player1, "");
+                     }
+                }
                 toDrop.setPlayer(2);
                 toDrop.setCaptured(false);
                 if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
                 {
                      msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
-                     ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1);
+                     ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1, true);
                      if(checkMateDrops.size()>0)
                      {
                          msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
@@ -382,7 +401,7 @@ public class miniShogi
                 System.out.println("Tie game. Too many moves.");
                 System.exit(0);
             }
-            ArrayList<String> checked = msBoard.checkCheckMate(player1);
+            ArrayList<String> checked = msBoard.checkCheckMate(player1, false);
             Collections.sort(checked, String.CASE_INSENSITIVE_ORDER);
             String kingMove = null;
             if (checked.size() !=0) 
