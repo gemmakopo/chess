@@ -240,6 +240,7 @@ public class board {
                     return true;
                 }
             }
+     
         } 
         else
         {
@@ -264,6 +265,7 @@ public class board {
                     return true;
                 }
             }
+        
         }
         return false;
     }
@@ -349,7 +351,7 @@ public class board {
         gameBoard[a.getColumn()][a.getRow()]=a;
     }
 
-    private int findVal(String j) {
+    public int findVal(String j) {
         if (j.equals("a") || j.equals("1"))
             return 0;
         else if (j.equals("b") || j.equals("2"))

@@ -20,7 +20,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] lo = new String[2]; 
     //     lo[0] = "-f";
-    //      lo[1] = "checkmate.in";
+    //      lo[1] = "doublePawnDrop.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -233,6 +233,41 @@ public class miniShogi
                 {
                     msBoard.printError(player1, "");
                 }
+               String pieceT =(f.get(i).substring(5, 6));
+               piece toDrop = null;
+               int pieceCol = msBoard.findVal( f.get(i).substring(7, 8));
+               int pieceRow = msBoard.findVal( f.get(i).substring(8));
+
+               for(int n =0; n<msBoard.player2Captured.size(); n++)
+               {
+                    if(msBoard.player2Captured.get(n).getPieceType().toLowerCase().equals(pieceT))
+                    {
+                        toDrop = msBoard.player2Captured.get(n);
+                        toDrop.setPieceType(toDrop.getPieceType().toLowerCase());
+                        toDrop.setColumn(pieceCol);
+                        toDrop.setRow(pieceRow);
+
+                        if(toDrop.getPieceType().equals("P")||toDrop.getPieceType().equals("p"))
+                        {
+                            for(int y=0; y<5; y++)
+                            {
+                                if(msBoard.gameBoard[toDrop.getColumn()][y].getPieceType().equals(toDrop.getPieceType()))
+                                {
+                                    msBoard.printError(player1, "");
+                                }
+                            }
+                        }
+                        msBoard.player2Captured.remove(n);
+                    }
+               }
+               
+               toDrop.setPlayer(1);
+               toDrop.setCaptured(false);
+               
+               if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
+               {
+                    msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
+               }
             }
             else if (Pattern.compile("drop [KGSBRP] [a-e][1-5]").matcher(f.get(i)).matches()) 
             {
@@ -247,6 +282,37 @@ public class miniShogi
                 if(player1)
                 {
                     msBoard.printError(player1, "");
+                }
+                String pieceT =(f.get(i).substring(5, 6));
+                piece toDrop = null;
+                int pieceCol = msBoard.findVal( f.get(i).substring(7, 8));
+                int pieceRow = msBoard.findVal( f.get(i).substring(8));
+                for(int n =0; n<msBoard.player1Captured.size(); n++)
+                {
+                     if(msBoard.player1Captured.get(n).getPieceType().equals(pieceT))
+                     {
+                         toDrop = msBoard.player1Captured.get(n);
+                         toDrop.setColumn(pieceCol);
+                        toDrop.setRow(pieceRow);
+                         if(toDrop.getPieceType().equals("P")||toDrop.getPieceType().equals("p"))
+                         {
+                             for(int y=0; y<5; y++)
+                             {
+                                 if(msBoard.gameBoard[toDrop.getColumn()][y].getPieceType().equals(toDrop.getPieceType()))
+                                 {
+                                     msBoard.printError(player1, "");
+                                 }
+                             }
+                         }
+                         msBoard.player1Captured.remove(n);
+                     }
+                }
+                
+                toDrop.setPlayer(2);
+                toDrop.setCaptured(false);
+                if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
+                {
+                     msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
                 }
             }
             else 
@@ -286,18 +352,37 @@ public class miniShogi
             String kingMove = null;
             if (checked.size() !=0) 
             { 
+              
                 inCheck = true;
                 String p;
                 int[] kingDest = new int[2];
                 //String initMove = returnBoardLocation(msBoard.checkCheckMate(true));
                 if(player1)
                 {
+                    for(int i =0; i<checked.size(); i++)
+                    {
+                        if(msBoard.gameBoard[msBoard.findVal(checked.get(i).substring(0,1))][msBoard.findVal(checked.get(i).substring(1))] !=null
+                        && msBoard.gameBoard[msBoard.findVal(checked.get(i).substring(0,1))][msBoard.findVal(checked.get(i).substring(1))].getPlayer()==2
+                        )
+                        {
+                            checked.remove(checked.get(i));
+                        }
+                    }
                     kingDest[0] = msBoard.king2.getColumn();
                     kingDest[1] = msBoard.king2.getRow();
                     p = "UPPER";
                 }
                 else
                 {
+                    for(int i =0; i<checked.size(); i++)
+                    {
+                          if(msBoard.gameBoard[msBoard.findVal(checked.get(i).substring(0,1))][msBoard.findVal(checked.get(i).substring(1))] !=null
+                          && msBoard.gameBoard[msBoard.findVal(checked.get(i).substring(0,1))][msBoard.findVal(checked.get(i).substring(1))].getPlayer()==1
+                          )
+                          {
+                              checked.remove(checked.get(i));
+                          }
+                    }
                     kingDest[0] = msBoard.king1.getColumn();
                     kingDest[1] = msBoard.king1.getRow();
                     p = "lower";
