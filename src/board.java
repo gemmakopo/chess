@@ -136,6 +136,10 @@ public class board {
             if (dest != null) 
             {
                 verifySkipOvers(init, dest, player1);
+                if(!checkVerifySkipOvers(init, dest, player1))
+                {
+                    printError(player1, moveText);
+                }
                 if ((init.getPlayer() == 1) && (dest.getPlayer() == 1))
                 {
                     System.out.println("UPPER player wins.  Illegal move.");
@@ -266,22 +270,29 @@ public class board {
     public ArrayList<String> checkCheckMate(boolean player1) 
     {
         ArrayList<String> toReturn = new ArrayList<String>();
+        boolean kingIsOnBoard = false;
         int c;
         int r;
         if (player1) 
         {
+            if(!king2.getCaptured())
+                kingIsOnBoard = true;
             c = king2.getColumn();
             r = king2.getRow();
         } 
         else
         {
+            if(!king1.getCaptured())
+                kingIsOnBoard = true;
             c = king1.getColumn();
             r = king1.getRow();
         }
-        
-        if(validateAllMoves(player1, c, r))
+        if(kingIsOnBoard)
         {
-            toReturn = validateKingsMoves(player1, c, r);
+            if(validateAllMoves(player1, c, r))
+            {
+                toReturn = validateKingsMoves(player1, c, r);
+            }
         }
         return toReturn;
     }
@@ -446,29 +457,7 @@ public class board {
                 }
             }
         }
-        if(init.getPieceType().equals("r") || init.getPieceType().equals("r"))
-        {
-            if(init.getColumn()-dest.getColumn()>1 ||dest.getColumn()-init.getColumn()>1)
-            {
-                for (int i = init.getColumn(); i< dest.getColumn(); i++)
-                {
-                    if(gameBoard[i][init.getRow()] != null)
-                    {
-                        printError(player1, this.moveText);
-                    }
-                }
-            }
-            if(init.getRow()-dest.getRow()>1 ||dest.getRow()-init.getRow()>1)
-            {
-                for (int i = init.getRow(); i< dest.getRow(); i++)
-                {
-                    if(gameBoard[init.getColumn()][i] != null)
-                    {
-                        printError(player1, this.moveText);
-                    }
-                }
-            }
-        }
+        
     }
 
     public void drawBoard() {
