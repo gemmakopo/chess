@@ -2,13 +2,23 @@
     "configurations": [
         {
             "type": "java",
-            "name": "CodeLens (Launch) - main",
+            "name": "CodeLens (Launch) - miniShogi",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
+            "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "main",
+            "mainClass": "miniShogi",
             "args": ""
-        }
+        },
+        // {
+        //     "type": "java",
+        //     "name": "CodeLens (Launch) - main",
+        //     "request": "launch",
+        //     "cwd": "${workspaceFolder}",
+        //     "console": "integratedTerminal",
+        //     "stopOnEntry": false,
+        //     "mainClass": "main",
+        //     "args": ""
+        // }
     ]
 }

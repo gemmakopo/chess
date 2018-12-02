@@ -1,44 +1,46 @@
 
-public class rook extends piece
-{
+public class rook extends piece {
 
-    public rook(boolean promoted, boolean captured, 
-        boolean forwardFacing, String type, int player, int col, int row)
+    public rook(boolean promoted, boolean captured, boolean forwardFacing, String type, String originalType, int player, int col, int row) 
     {
-        super(promoted, captured, forwardFacing, type, player, col, row);
+        super(promoted, captured, forwardFacing, type, originalType, player, col, row);
     }
 
-    public boolean move(int c, int r)
+    public boolean move(int c, int r) 
+    {
+        if (validateMove(c, r)) 
+        {
+            this.setColumn(c);
+            this.setRow(r);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validateMove(int c, int r) 
     {
         int column = this.getColumn();
         int row = this.getRow();
 
-        if(c==column && r==row)
-        {
-            //do something?
-        }
-        if(c<0 || c>4 || r<0 || r>4)
+        if (c == column && r == row) 
         {
             return false;
         }
-        if(!this.getPromoted())
+        if (c < 0 || c > 4 || r < 0 || r > 4) 
         {
-            if((c==column && (r==row+1||r==row-1||r==row+2||r==row-2))||
-            (r==row && (c==column+1||c==column+2||c==column-1||c==column-2)))
+            return false;
+        }
+        if (!this.getPromoted())
+        {
+            if ((c == column)|| (r == row )) 
             {
-                this.setColumn(c);
-                this.setRow(r);
                 return true;
             }
-        }
-        else
-        {
-            if((c==column && (r==row+1||r==row-1||r==row+2||r==row-2))||
-            (r==row && (c==column+1||c==column+2||c==column-1||c==column-2))||
-            ((r==row+1 || r==row-1) && (c==column +1 || c==column-1)))
+        } 
+        else {
+            if ((c == column)|| (r == row)
+                    || ((r == row + 1 || r == row - 1) && (c == column + 1 || c == column - 1)))
             {
-                this.setColumn(c);
-                this.setRow(r);
                 return true;
             }
         }

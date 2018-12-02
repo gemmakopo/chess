@@ -1,70 +1,76 @@
 import javax.lang.model.util.ElementScanner6;
 
-public class silverGeneral extends piece
-{
-    
-    public silverGeneral(boolean promoted, boolean captured, 
-        boolean forwardFacing, String type, int player, int col, int row)
+public class silverGeneral extends piece {
+
+    public silverGeneral(boolean promoted, boolean captured, boolean forwardFacing, String type, String originalType, int player, int col,
+            int row) 
     {
-        super(promoted, captured, forwardFacing, type, player, col, row);
+        super(promoted, captured, forwardFacing, type, originalType, player, col, row);
     }
 
-    public boolean move(int c, int r)
+    public boolean move(int c, int r) 
     {
-        int column = c;
-        int row = r;
-        if(c<0 || c>4 || r<0 || r>4)
+        if (validateMove(c, r)) 
+        {
+            this.setColumn(c);
+            this.setRow(r);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validateMove(int c, int r) 
+    {
+        int column = this.getColumn();
+        int row = this.getRow();
+        if (c == column && r == row) 
         {
             return false;
         }
-        if(this.getForwardFacing())
+        if (c < 0 || c > 4 || r < 0 || r > 4) 
         {
-            if(!this.getPromoted())
-            {
-                if((c==column && r==row+1) ||
-                ((c==column+1 || c==column-1) && (r==row+1 || r==row-1)))
-                {
-                    this.setColumn(c);
-                    this.setRow(r);
-                    return true;
-                }
-            }
-            else
-            {
-                if((c==column && r==row+1) ||
-                ((c==column+1 || c==column-1) && (r==row+1 || r==row-1))||
-                (r==row && (c==c+1 || c==c-1)))
-                {
-                    this.setColumn(c);
-                    this.setRow(r);
-                    return true;
-                }
-            }
+            return false;
         }
-        else
+        if (this.getForwardFacing()) 
         {
-            if(!this.getPromoted())
+            if (!this.getPromoted()) 
             {
-                if((c==column && r==row-1) ||
-                ((c==column+1 || c==column-1) && (r==row+1 || r==row-1)))
+                if ((c == column && r == row + 1)
+                        || ((c == column + 1 || c == column - 1) && (r == row + 1 || r == row - 1))) 
                 {
-                    this.setColumn(c);
-                    this.setRow(r);
+                    return true;
+                }
+            } 
+            else 
+            {
+                if ((c == column && r == row + 1)
+                        || ((c == column + 1 || c == column - 1) && (r == row + 1 || r == row - 1))
+                        || (r == row && (c == column + 1 || c == column - 1))) 
+                {
                     return true;
                 }
             }
-            else
+        } 
+        else 
+        {
+            if (!this.getPromoted()) 
             {
-                if((c==column && r==row-1) ||
-                ((c==column+1 || c==column-1) && (r==row+1 || r==row-1))||
-                (r==row && (c==c+1 || c==c-1)))
+                if ((c == column && r == row - 1)
+                        || ((c == column + 1 || c == column - 1) && (r == row + 1 || r == row - 1))) 
                 {
-                    this.setColumn(c);
-                    this.setRow(r);
+                    return true;
+                }
+            } 
+            else 
+            {
+                if ((c == column && r == row - 1)
+                        || ((c == column + 1 || c == column - 1) && (r == row + 1 || r == row - 1))
+                        || (r == row && (c == column + 1 || c == column - 1))) 
+                {
                     return true;
                 }
             }
         }
         return false;
-    }   
+    }
 }
