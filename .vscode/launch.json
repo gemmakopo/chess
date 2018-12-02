@@ -2,13 +2,13 @@
     "configurations": [
         {
             "type": "java",
-            "name": "CodeLens (Launch) - main",
+            "name": "CodeLens (Launch) - miniShogi",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "main",
+            "mainClass": "miniShogi",
             "args": ""
-        }
+        },
     ]
 }

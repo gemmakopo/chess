@@ -25,14 +25,15 @@ public class board {
     String board[][] = new String[5][5];
     String currentBoard;
     String moveText = null;
+    public List<piece> currentlyActive = new ArrayList<piece>();
 
     public board() 
     {
         newBoard();
     }
-    public board(List h)
+    public board(Utils.TestCase tc)
     {
-        makeBoard(h);
+        makeBoard(tc.initialPieces);
     }
 
     private void newBoard() {
@@ -70,7 +71,7 @@ public class board {
             
             p.setColumn(findVal(d.position.substring(0, 1)));
             p.setRow(findVal(d.position.substring(1)));
-
+            currentlyActive.add(p);
             gameBoard[p.getColumn()][p.getRow()] = p;
         }
     }
@@ -211,47 +212,53 @@ public class board {
             return true;
         if (player1) 
         {
-            if (pawn1.validateMove(c, r)) 
+            if (pawn1.getCaptured() ==false && pawn1.validateMove(c, r)) 
             {
                 return true;
             } 
-            if (king1.validateMove(c, r)) 
+            if (king1.getCaptured() ==false && king1.validateMove(c, r)) 
             {
                 return true;
             } 
-            if (bishop1.validateMove(c, r)) 
+            if (bishop1.getCaptured() ==false && bishop1.validateMove(c, r)) 
             {
                 return true;
             } 
-            if (goldGeneral1.validateMove(c, r)) {
+            if (goldGeneral1.getCaptured() ==false && goldGeneral1.validateMove(c, r)) {
                 return true;
             } 
-            if (silverGeneral1.validateMove(c, r)) {
+            if (silverGeneral1.getCaptured() ==false && silverGeneral1.validateMove(c, r)) {
                 return true;
             } 
-            if (rook1.validateMove(c, r)) {
-                return true;
+            if (rook1.getCaptured() ==false && rook1.validateMove(c, r)) {
+                if(checkVerifySkipOvers(rook1, king2, player1))
+                {
+                    return true;
+                }
             }
         } 
         else
         {
-            if (pawn2.validateMove(c, r)) {
+            if (pawn2.getCaptured() ==false && pawn2.validateMove(c, r)) {
                 return true;
             }
-            if (king2.validateMove(c, r)) {
+            if (king2.getCaptured() ==false && king2.validateMove(c, r)) {
                 return true;
             } 
-            if (bishop2.validateMove(c, r)) {
+            if (bishop2.getCaptured() ==false && bishop2.validateMove(c, r)) {
                 return true;
             } 
-            if (goldGeneral2.validateMove(c, r)) {
+            if (goldGeneral2.getCaptured() ==false && goldGeneral2.validateMove(c, r)) {
                 return true;
             } 
-            if (silverGeneral2.validateMove(c, r)) {
+            if (silverGeneral2.getCaptured() ==false && silverGeneral2.validateMove(c, r)) {
                 return true;
             } 
-            if (rook2.validateMove(c, r)) {
-                return true;
+            if (rook2.getCaptured() ==false &&   rook2.validateMove(c, r)) {
+                if(checkVerifySkipOvers(rook2, king1, player1))
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -341,6 +348,65 @@ public class board {
         return Character.toString(alphacols.charAt(c));
     }
 
+    private boolean checkVerifySkipOvers(piece init, piece dest, boolean player1)
+    {
+        if(init.getOriginalType().equals("r") || init.getOriginalType().equals("R"))
+        {
+            if(init.getColumn()==dest.getColumn())
+            {
+                if(init.getRow()>dest.getRow())
+                {
+                    for (int i = dest.getRow()+1; i<init.getRow(); i++)
+                    {
+                        if(!(this.gameBoard[init.getColumn()][i]==null))
+                        {
+                            return false;
+                        }
+                 
+                    }
+                }
+                if(init.getRow()<dest.getRow())
+                {
+                    for (int i = init.getRow()+1; i<dest.getRow(); i++)
+                    {
+                        if(!(this.gameBoard[init.getColumn()][i]==null))
+                        {
+                            return false;
+                        }
+                    }
+                 
+                }
+            }
+            if(init.getRow()==dest.getRow())
+            {
+                if(init.getColumn()>dest.getColumn())
+                {
+                for (int i = dest.getColumn()+1; i<init.getColumn(); i++)
+                {
+                    if(!(this.gameBoard[i][init.getRow()]==null))
+                    {
+                        return false;
+                    }
+                   
+                }
+                }
+                if(init.getColumn()+1<dest.getColumn())
+                {
+                    for (int i = init.getColumn(); i<dest.getColumn(); i++)
+                    {
+                    if(!(this.gameBoard[i][init.getRow()]==null))
+                    {
+                        return false;
+                    }
+                    }
+                 
+                }
+            }
+            
+        }
+       return true;
+     
+    }
     private void verifySkipOvers(piece init, piece dest, boolean player1)
     {
         if(init.getPieceType().equals("b") || init.getPieceType().equals("B"))
@@ -380,39 +446,27 @@ public class board {
                 }
             }
         }
-        if(init.getPieceType().equals("b") || init.getPieceType().equals("B"))
+        if(init.getPieceType().equals("r") || init.getPieceType().equals("r"))
         {
-            if(dest.getColumn() == init.getColumn()+2)
-            { 
-                if(!gameBoard[init.getColumn()+1][init.getRow()].equals(""))
-                {  
-                    printError(player1, this.moveText);
-                }
-               
-            }
-            if(dest.getColumn() == init.getColumn()-2)
+            if(init.getColumn()-dest.getColumn()>1 ||dest.getColumn()-init.getColumn()>1)
             {
-                if(!gameBoard[init.getColumn()-1][init.getRow()].equals(""))
+                for (int i = init.getColumn(); i< dest.getColumn(); i++)
                 {
-                    printError(player1, this.moveText);
+                    if(gameBoard[i][init.getRow()] != null)
+                    {
+                        printError(player1, this.moveText);
+                    }
                 }
-            
             }
-            if(dest.getRow() == init.getRow()-2)
+            if(init.getRow()-dest.getRow()>1 ||dest.getRow()-init.getRow()>1)
             {
-                if(!gameBoard[init.getColumn()][init.getRow()-1].equals(""))
+                for (int i = init.getRow(); i< dest.getRow(); i++)
                 {
-                    printError(player1, this.moveText);
+                    if(gameBoard[init.getColumn()][i] != null)
+                    {
+                        printError(player1, this.moveText);
+                    }
                 }
-            
-            }
-            if(dest.getRow() == init.getRow()+2)
-            {
-                if(!gameBoard[init.getColumn()][init.getRow()-1].equals(""))
-                {
-                    printError(player1, this.moveText);
-                }
-            
             }
         }
     }

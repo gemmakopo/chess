@@ -18,9 +18,9 @@ public class miniShogi
     board msBoard;
 
     public static void main(String[] args) throws Exception{
-       // String[] lo = new String[2]; 
-        // lo[0] = "-f";
-         //lo[1] = "basicCheck.in";
+    //    String[] lo = new String[2]; 
+    //     lo[0] = "-f";
+    //      lo[1] = "basicCheck.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -59,16 +59,74 @@ public class miniShogi
     {
         fileVersion = true;
         gameState = true;
-        msBoard = new board(tc.initialPieces);
+        msBoard = new board(tc);
         for(int i=0; i<tc.lowerCaptures.size(); i++)
         {
-            msBoard.player2Captured.add(i, msBoard.findPiece(tc.lowerCaptures.get(i)));
+            if(msBoard.player2Captured.contains( msBoard.findPiece(tc.lowerCaptures.get(i))))
+            {
+                msBoard.player2Captured.add(i, msBoard.findPiece(tc.lowerCaptures.get(i).toUpperCase()));
+            }
+            else
+            {
+                if(msBoard.currentlyActive.contains( msBoard.findPiece(tc.lowerCaptures.get(i))))
+                {
+                    msBoard.player2Captured.add(i, msBoard.findPiece(tc.lowerCaptures.get(i).toUpperCase()));
+                
+                }
+                else
+                {
+                 msBoard.player2Captured.add(i, msBoard.findPiece(tc.lowerCaptures.get(i)));
+                }
+            }
+            if(msBoard.player2Captured.get(i)!=null)
+            {
+                piece j = msBoard.player2Captured.get(i);
+                j.setCaptured(true);
+                msBoard.player2Captured.remove(i);
+                msBoard.player2Captured.add(i, j);
+            }
         }
+        
+      
         for(int k=0; k< tc.upperCaptures.size(); k++)
         {
-            msBoard.player1Captured.add(k, msBoard.findPiece(tc.upperCaptures.get(k)));
+            if(msBoard.player1Captured.contains( msBoard.findPiece(tc.upperCaptures.get(k))))
+            {
+               
+                msBoard.player1Captured.add(k, msBoard.findPiece(tc.upperCaptures.get(k).toLowerCase()));
+                
+
+            }
+            else
+            {
+                if(msBoard.currentlyActive.contains( msBoard.findPiece(tc.upperCaptures.get(k))))
+                {
+                    msBoard.player1Captured.add(k, msBoard.findPiece(tc.upperCaptures.get(k).toLowerCase()));
+                
+                }
+                else
+                {
+                 msBoard.player1Captured.add(k, msBoard.findPiece(tc.upperCaptures.get(k)));
+                }
+            }
+            if(msBoard.player1Captured.get(k)!=null)
+            {
+                piece j = msBoard.player1Captured.get(k);
+                j.setCaptured(true);
+                msBoard.player1Captured.remove(k);
+                msBoard.player1Captured.add(k, j);
+            }
         }
+        // for(piece p:msBoard.player1Captured)
+        // {
+        //     p.setCaptured(true);
+        // }
+        // for(piece p:msBoard.player2Captured)
+        // {
+        //     p.setCaptured(true);
+        // }
         makeMoves(tc.moves);
+    
         
     }
     private void makeMoves(List<String> f)
@@ -76,6 +134,7 @@ public class miniShogi
         
         for(int i = 0; i< f.size(); i++)
         {
+           // msBoard.drawBoard();
             boolean inCheck=false;
             if (endPlays == 200) 
             {
