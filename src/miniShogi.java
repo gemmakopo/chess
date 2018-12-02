@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] lo = new String[2]; 
     //     lo[0] = "-f";
-    //      lo[1] = "captureDrop.in";
+    //      lo[1] = "dropEmptyHand.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -235,11 +235,16 @@ public class miniShogi
                {
                    msBoard.printError(player1, "");
                }
-
+               if(msBoard.player2Captured.get(0)==null)
+               {
+                   msBoard.printError(player1, "");
+               }
+               boolean didWeFindAMatch = false;
                for(int n =0; n<msBoard.player2Captured.size(); n++)
                {
-                    if(msBoard.player2Captured.get(n).getPieceType().toLowerCase().equals(pieceT))
+                    if(msBoard.player2Captured.get(n) != null && msBoard.player2Captured.get(n).getPieceType().toLowerCase().equals(pieceT))
                     {
+                        didWeFindAMatch = true;
                         toDrop = msBoard.player2Captured.get(n);
                         toDrop.setPieceType(toDrop.getPieceType().toLowerCase());
                         toDrop.setColumn(pieceCol);
@@ -258,6 +263,10 @@ public class miniShogi
                         }
                         msBoard.player2Captured.remove(n);
                     }
+               }
+               if(didWeFindAMatch == false)
+               {
+                   msBoard.printError(player1, "");
                }
                
                toDrop.setPlayer(1);
@@ -282,10 +291,16 @@ public class miniShogi
                 {
                     msBoard.printError(player1, "");
                 }
+                if(msBoard.player1Captured.get(0)==null)
+                {
+                    msBoard.printError(player1, "");
+                }
+                boolean didWeFindAMatch = false;
                 for(int n =0; n<msBoard.player1Captured.size(); n++)
                 {
-                     if(msBoard.player1Captured.get(n).getPieceType().equals(pieceT.toUpperCase()))
+                     if(msBoard.player1Captured.get(n)!= null && msBoard.player1Captured.get(n).getPieceType().equals(pieceT.toUpperCase()))
                      {
+                         didWeFindAMatch = true;
                          toDrop = msBoard.player1Captured.get(n);
                          toDrop.setColumn(pieceCol);
                         toDrop.setRow(pieceRow);
@@ -303,8 +318,12 @@ public class miniShogi
                          }
                          msBoard.player1Captured.remove(n);
                      }
+                   
                 }
-                
+                if(didWeFindAMatch == false)
+                {
+                    msBoard.printError(player1, "");
+                }
                 toDrop.setPlayer(2);
                 toDrop.setCaptured(false);
                 if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
