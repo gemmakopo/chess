@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] a = new String[2]; 
     //     a[0] = "-f";
-    //      a[1] = "promotedSilverMoves.in";
+    //      a[1] = "promotedPawnIllegalMove.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -95,8 +95,6 @@ public class miniShogi
             {
                
                 msBoard.player1Captured.add(k, msBoard.findPiece(tc.upperCaptures.get(k).toLowerCase()));
-                
-
             }
             else
             {
@@ -126,14 +124,22 @@ public class miniShogi
         // {
         //     p.setCaptured(true);
         // }
+        if(tc.moves.size()>0)
+        {
+            for(int t=0; t<tc.moves.size(); t++)
+            {
+                if(tc.moves.get(t).equals(""))
+                    tc.moves.remove(t);
+            }
+        }
         makeMoves(tc.moves);
+
     
         
     }
     private void makeMoves(List<String> f)
     {
-   
-        
+
         for(int i = 0; i< f.size(); i++)
         {
            // msBoard.drawBoard();///////////////////////////
