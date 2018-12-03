@@ -1,4 +1,10 @@
 
+//*******************************************************************
+// pawn
+// Inherits traits from piece
+// +
+// p
+//*******************************************************************
 public class pawn extends piece 
 {
     public pawn(boolean promoted, boolean captured, boolean forwardFacing, String type, String originalType, int player, int col, int row) 
@@ -17,7 +23,11 @@ public class pawn extends piece
         }
         return false;
     }
-
+    /**
+     * ensures that a move is allowed for a pawn type piece
+     * @param c column
+     * @param r row
+     */
     public boolean validateMove(int c, int r) 
     {
         int column = this.getColumn();

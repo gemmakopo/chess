@@ -1,4 +1,11 @@
 
+//*******************************************************************
+//goldGeneral
+// Inherits traits from piece.
+// +++
+// +g+
+//  +
+//*******************************************************************
 public class goldGeneral extends piece 
 {
     public goldGeneral(boolean promoted, boolean captured, 
@@ -17,7 +24,11 @@ public class goldGeneral extends piece
         }
         return false;
     }
-
+        /**
+     * ensures that a move is allowed for a goldGeneral type piece
+     * @param c column
+     * @param r row
+     */
     public boolean validateMove(int c, int r) 
     {
         if (c < 0 || c > 4 || r < 0 || r > 4)

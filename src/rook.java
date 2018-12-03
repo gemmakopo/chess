@@ -1,5 +1,15 @@
 
-public class rook extends piece {
+//*******************************************************************
+// rook
+// Inherits traits from piece
+//   +
+//   +
+// ++r++
+//   +
+//   +
+//*******************************************************************
+
+class rook extends piece {
 
     public rook(boolean promoted, boolean captured, boolean forwardFacing, String type, String originalType, int player, int col, int row) 
     {
@@ -16,7 +26,11 @@ public class rook extends piece {
         }
         return false;
     }
-
+    /**
+     * ensures that a move is allowed for a rook type piece
+     * @param c column
+     * @param r row
+     */
     public boolean validateMove(int c, int r) 
     {
         int column = this.getColumn();

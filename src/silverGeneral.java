@@ -1,5 +1,11 @@
-import javax.lang.model.util.ElementScanner6;
 
+//*******************************************************************
+// silverGeneral
+// Inherits traits from piece.
+// +++
+//  s
+// + +
+//*******************************************************************
 public class silverGeneral extends piece {
 
     public silverGeneral(boolean promoted, boolean captured, boolean forwardFacing, String type, String originalType, int player, int col,
@@ -18,7 +24,12 @@ public class silverGeneral extends piece {
         }
         return false;
     }
-
+    /**
+     * Ensures that a requested location change is allowed
+     * @param c column
+     * @param r row
+     * @return true if move is allowed
+     */
     public boolean validateMove(int c, int r) 
     {
         int column = this.getColumn();

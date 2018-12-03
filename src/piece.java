@@ -1,11 +1,11 @@
 import java.util.*;
-
 import javax.lang.model.util.ElementScanner6;
-
 import java.io.*;
-
-public class piece {
-    // king, rook, bishop, goldGeneral, silverGeneral, pawn
+//*******************************************************************
+// piece
+// This is where piece attributes can be retrieved and set for all piece types
+//*******************************************************************
+public class piece{
 
     private String type;
     private String originalType;
@@ -106,11 +106,12 @@ public class piece {
     {
         this.forwardFacing = dir;
     }
-    // public boolean validatePieceMoves(int c, int r)
-    // {
-    //     this.validateMove(c, r);
-    // }
 
+    /**
+     * Helps us identify which piece's move method needs to be called based on type
+     * @param c column
+     * @param r row
+     */
     public boolean move(int c, int r) 
     {
         this.column = c;

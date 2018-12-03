@@ -1,4 +1,11 @@
 
+//*******************************************************************
+// king
+// Inherits traits from piece. If this gets captured, it's all over for you!
+// +++
+// +k+
+// +++
+//*******************************************************************
 public class king extends piece 
 {
     public king(boolean promoted, boolean captured, boolean forwardFacing, String type, String originalType, int player, int col, int row) 
@@ -16,7 +23,11 @@ public class king extends piece
         }
         return false;
     }
-
+        /**
+     * ensures that a move is allowed for a king type piece
+     * @param c column
+     * @param r row
+     */
     public boolean validateMove(int c, int r) 
     {
         if (c < 0 || c > 4 || r < 0 || r > 4) 

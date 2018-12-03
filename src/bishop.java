@@ -1,4 +1,13 @@
 
+//*******************************************************************
+// bishop
+// Inherits traits from piece. Can move in diagonals.
+// +    +
+//  +  +
+//    b
+//  +  +
+// +    +
+//*******************************************************************
 public class bishop extends piece {
 
     public bishop(boolean promoted, boolean captured, boolean forwardFacing, String type, String originalType, int player, int col,
@@ -15,7 +24,10 @@ public class bishop extends piece {
 
         return false;
     }
-
+    /** ensures that a move is allowed for a bishop type piece
+    * @param c column
+    * @param r row
+    */
     public boolean validateMove(int c, int r) 
     {
     
