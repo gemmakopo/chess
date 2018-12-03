@@ -31,7 +31,7 @@ public class piece {
     public void setPromoted(boolean promo) 
     {
         this.promoted = promo;
-        if(promo)
+        if(promo && !this.type.contains("+"))
         {
             this.type = "+"+ this.getPieceType();
         }

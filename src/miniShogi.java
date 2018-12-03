@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] a = new String[2]; 
     //     a[0] = "-f";
-    //      a[1] = "promoteLeavingZone.in";
+    //      a[1] = "promotedSilverPromotion.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -638,6 +638,11 @@ public class miniShogi
     private void promotePiece(boolean player1, String input)
     {
         piece initPos=msBoard.gameBoard[msBoard.findVal(input.substring(5, 6))][msBoard.findVal(input.substring(6,7))];
+        if(initPos.getPromoted()==true)
+        {
+            msBoard.printError(player1, "");
+        }
+        
         int initRow = initPos.getRow();
         piece[] toPromote = move(player1, input, true);
    
