@@ -20,8 +20,8 @@ public class miniShogi
 
     public static void main(String[] args) throws Exception{
     //    String[] a = new String[2]; 
-    //     args[0] = "-f";
-    //      a[1] = "lowerStuckPawnDrop.in";
+    //     a[0] = "-f";
+    //      a[1] = "basicCheck.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -147,7 +147,10 @@ public class miniShogi
             {
                 endPlays++;
             }
-            ArrayList<String> checked = msBoard.checkCheckMate(player1, false);
+            ArrayList<ArrayList<String>> combinedMoves = msBoard.checkCheckMate(player1, false);
+            ArrayList<String> checked = combinedMoves.get(0);
+            ArrayList<String> blockMoves = combinedMoves.get(1);
+
             Collections.sort(checked, String.CASE_INSENSITIVE_ORDER);
             String kingMove = null;
             if (checked.size() !=0) 
@@ -288,7 +291,10 @@ public class miniShogi
                if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
                {
                     msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
-                    ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1, true);
+                    ArrayList<ArrayList<String>> cMoves = msBoard.checkCheckMate(!player1, false);
+                    ArrayList<String> checkMateDrops = cMoves.get(0);
+                    ArrayList<String> bMoves = cMoves.get(1);
+
                     if(checkMateDrops.size()>0)
                     {
                         msBoard.player2Captured.add(arrayPos, toDrop);
@@ -360,7 +366,10 @@ public class miniShogi
                 if( msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]==null)
                 {
                      msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()] = toDrop;
-                     ArrayList<String> checkMateDrops = msBoard.checkCheckMate(!player1, true);
+                     ArrayList<ArrayList<String>> cMoves = msBoard.checkCheckMate(!player1, false);
+                     ArrayList<String> checkMateDrops = cMoves.get(0);
+                     ArrayList<String> bMoves = cMoves.get(1);
+         
                      if(checkMateDrops.size()>0)
                      {
                          msBoard.gameBoard[toDrop.getColumn()][toDrop.getRow()]=null;
@@ -396,20 +405,40 @@ public class miniShogi
 
         while (gameState == true) 
         {
+            int[] kingDest = new int[2];
+            String p = "";
+
             if (endPlays == 200) 
             {
                 System.out.println("Tie game. Too many moves.");
                 System.exit(0);
             }
-            ArrayList<String> checked = msBoard.checkCheckMate(player1, false);
-            Collections.sort(checked, String.CASE_INSENSITIVE_ORDER);
+            ArrayList<ArrayList<String>> combinedMoves = msBoard.checkCheckMate(player1, false);
+            ArrayList<String> checked = combinedMoves.get(0);
+            ArrayList<String> blockedMoves = combinedMoves.get(1);
+
+            if(player1)
+            {
+                kingDest[0] = msBoard.king2.getColumn();
+                    kingDest[1] = msBoard.king2.getRow();
+                    p = "UPPER";
+
+            }
+            else
+            {
+                kingDest[0] = msBoard.king1.getColumn();
+                kingDest[1] = msBoard.king1.getRow();
+                p = "lower";
+            }
+
+          
+
             String kingMove = null;
             if (checked.size() !=0) 
             { 
               
                 inCheck = true;
-                String p;
-                int[] kingDest = new int[2];
+               
                 //String initMove = returnBoardLocation(msBoard.checkCheckMate(true));
                 if(player1)
                 {
@@ -422,9 +451,7 @@ public class miniShogi
                             checked.remove(checked.get(i));
                         }
                     }
-                    kingDest[0] = msBoard.king2.getColumn();
-                    kingDest[1] = msBoard.king2.getRow();
-                    p = "UPPER";
+                    
                 }
                 else
                 {
@@ -437,9 +464,7 @@ public class miniShogi
                               checked.remove(checked.get(i));
                           }
                     }
-                    kingDest[0] = msBoard.king1.getColumn();
-                    kingDest[1] = msBoard.king1.getRow();
-                    p = "lower";
+                 
                 }
                 kingMove = returnBoardLocation(kingDest);
 
@@ -447,9 +472,15 @@ public class miniShogi
                 System.out.println("Available moves:");
                 for (int i = 0; i < checked.size(); i++)
                 {
-                   
-                    System.out.println("move " + kingMove + " " + checked.get(i));
+                   blockedMoves.add("move " + kingMove + " " + checked.get(i));
+                  
                 }
+                Collections.sort(blockedMoves, String.CASE_INSENSITIVE_ORDER);
+                for(String t: blockedMoves)
+                {
+                    System.out.println(t);
+                }
+
             }
             player1=!player1;
             Scanner scanner = new Scanner(System.in);

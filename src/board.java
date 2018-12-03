@@ -277,9 +277,11 @@ public class board {
         }
         return false;
     }
-    public ArrayList<String> checkCheckMate(boolean player1, boolean test) 
+    public ArrayList<ArrayList<String>> checkCheckMate(boolean player1, boolean test) 
     {
         ArrayList<String> toReturn = new ArrayList<String>();
+        ArrayList<String> blockEm = new ArrayList<String>();
+        ArrayList<ArrayList<String>> combined = new ArrayList<ArrayList<String>>();
         boolean kingIsOnBoard = false;
         int c;
         int r;
@@ -302,7 +304,8 @@ public class board {
             if(validateAllMoves(player1, c, r))
             {
                 toReturn = validateKingsMoves(player1, c, r);
-                if(toReturn.size()==0)
+                blockEm = blockEm(player1, c, r);
+                if(toReturn.size()==0 && blockEm.size()==0)
                 {
                     if(!test)
                     {
@@ -316,7 +319,141 @@ public class board {
                 }
             }
         }
-        return toReturn;
+        combined.add(0, toReturn);
+        combined.add(1, blockEm);
+        return combined;
+    }
+
+    private ArrayList<String> createMoveList(boolean player1, int c, int r)
+    {
+        ArrayList<String> createdMoveList = new ArrayList<String>();
+        if(c>4||c<0||r>4||r<0)
+        {
+             return createdMoveList;
+        }
+    if (!player1) 
+    {
+        if (pawn1.getCaptured() ==false && (pawn1.validateMove(c, r))) 
+        {
+            createdMoveList.add("move "+ getColumnVal(pawn1.getColumn())+ Integer.toString(pawn1.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        } 
+        if (bishop1.getCaptured() ==false && bishop1.validateMove(c, r)) 
+        {
+            createdMoveList.add("move "+ getColumnVal(bishop1.getColumn())+ Integer.toString(bishop1.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        } 
+        if (goldGeneral1.getCaptured() ==false && goldGeneral1.validateMove(c, r)) {
+            createdMoveList.add("move "+ getColumnVal(goldGeneral1.getColumn())+ Integer.toString(goldGeneral1.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        } 
+        if (silverGeneral1.getCaptured() ==false && silverGeneral1.validateMove(c, r)) {
+            createdMoveList.add("move "+ getColumnVal(silverGeneral1.getColumn())+ Integer.toString(silverGeneral1.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        } 
+        if (rook1.getCaptured() ==false && rook1.validateMove(c, r)) {
+            if(checkVerifySkipOvers(rook1, king2, player1))
+            {
+                createdMoveList.add("move "+ getColumnVal(rook1.getColumn())+ Integer.toString(rook1.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+            }
+        }
+ 
+    } 
+    else
+    {
+        if (pawn2.getCaptured() ==false && pawn2.validateMove(c, r)) 
+        {
+            createdMoveList.add("move "+ getColumnVal(pawn2.getColumn())+ Integer.toString(pawn2.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        }
+   
+        if (bishop2.getCaptured() ==false && bishop2.validateMove(c, r)) {
+            createdMoveList.add("move "+ getColumnVal(bishop2.getColumn())+ Integer.toString(bishop2.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        } 
+        if (goldGeneral2.getCaptured() ==false && goldGeneral2.validateMove(c, r)) {
+            createdMoveList.add("move "+ getColumnVal(goldGeneral2.getColumn())+ Integer.toString(goldGeneral2.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        } 
+        if (silverGeneral2.getCaptured() ==false && silverGeneral2.validateMove(c, r)) {
+            createdMoveList.add("move "+ getColumnVal(silverGeneral2.getColumn())+ Integer.toString(silverGeneral2.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+        } 
+        if (rook2.getCaptured() ==false &&   rook2.validateMove(c, r)) {
+            if(checkVerifySkipOvers(rook2, king1, player1))
+            {
+                createdMoveList.add("move "+ getColumnVal(rook2.getColumn())+ Integer.toString(rook2.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
+            }
+        }
+    
+    }
+        return createdMoveList;
+    }
+
+    /**
+     * 
+     * @param player1
+     * @param c
+     * @param r
+     * @return an Arraylist<String> of ready-to-go move moves that will block the king from an opposing
+     */
+    public ArrayList<String> blockEm(boolean player1, int c, int r)
+    {
+        ArrayList<String> toBlock = new ArrayList<String>();
+        ArrayList<String> tempToBlock = new ArrayList<String>();
+
+            for(int i =0; i<4; i++)
+            {
+                if((player1 && gameBoard[c][i]!= null && (gameBoard[c][i].getPieceType().equals("r") || gameBoard[c][i].getPieceType().equals("+r")) 
+                ||
+                (!player1 && gameBoard[c][i]!= null && (gameBoard[c][i].getPieceType().equals("R") || gameBoard[c][i].getPieceType().equals("+R")) )))
+                
+                {
+                    if(i>r)
+                    {
+                        for(int j = r+1; j<=i; j++)
+                        {
+                            tempToBlock = createMoveList(player1, c, j);
+                            for(String temp: tempToBlock){
+                                toBlock.add(temp);
+                            }
+                            
+                        }
+                    }
+                    else
+                    {
+                        for(int j = i; j<r; j++)
+                        {
+                            tempToBlock = createMoveList(player1, c, j);
+                            for(String temp: tempToBlock){
+                                toBlock.add(temp);
+                            }
+                        }
+                           
+                    }
+                }
+                if((player1 && gameBoard[i][r]!= null && (gameBoard[i][r].getPieceType().equals("r") || gameBoard[i][r].getPieceType().equals("+r")) 
+                ||
+                (!player1 && gameBoard[i][r]!= null && (gameBoard[i][r].getPieceType().equals("R") || gameBoard[i][r].getPieceType().equals("+R")) )))
+                {
+                    if(i>c)
+                    {
+                        for(int j = c+1; j<=i; j++)
+                        {
+                            tempToBlock = createMoveList(player1, j, r);
+                            for(String temp: tempToBlock){
+                                toBlock.add(temp);
+                            }
+                            
+                        }
+                    }
+                    else
+                    {
+                        for(int j = i; j<c; j++)
+                        {
+                            tempToBlock = createMoveList(player1, j, r);
+                            for(String temp: tempToBlock){
+                                toBlock.add(temp);
+                            }
+                        }
+                           
+                    }
+                }
+            }
+        
+        return toBlock;
     }
     private ArrayList<String> validateKingsMoves(boolean player1, int c, int r)
     {
