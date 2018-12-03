@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] a = new String[2]; 
     //     a[0] = "-f";
-    //      a[1] = "basicCheck.in";
+    //      a[1] = "tieGame.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -140,7 +140,7 @@ public class miniShogi
             boolean inCheck=false;
             if (endPlays == 200) 
             {
-                System.out.println("Tie game. Too many moves.");
+                System.out.println("Tie game.  Too many moves.");
                 System.exit(0);
             }
             if(i%2 !=0)
@@ -410,7 +410,7 @@ public class miniShogi
 
             if (endPlays == 200) 
             {
-                System.out.println("Tie game. Too many moves.");
+                System.out.println("Tie game.  Too many moves.");
                 System.exit(0);
             }
             ArrayList<ArrayList<String>> combinedMoves = msBoard.checkCheckMate(player1, false);
