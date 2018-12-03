@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] a = new String[2]; 
     //     a[0] = "-f";
-    //      a[1] = "winOnLastMove.in";
+    //      a[1] = "promoteLeavingZone.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -136,7 +136,7 @@ public class miniShogi
         
         for(int i = 0; i< f.size(); i++)
         {
-            //msBoard.drawBoard();///////////////////////////
+           // msBoard.drawBoard();///////////////////////////
             boolean inCheck=false;
             if (endPlays == 200) 
             {
@@ -637,11 +637,13 @@ public class miniShogi
 
     private void promotePiece(boolean player1, String input)
     {
+        piece initPos=msBoard.gameBoard[msBoard.findVal(input.substring(5, 6))][msBoard.findVal(input.substring(6,7))];
+        int initRow = initPos.getRow();
         piece[] toPromote = move(player1, input, true);
    
-        if((toPromote[0].getRow()==4 && toPromote[0].getPlayer() == 1) 
+        if((initRow==4 && toPromote[0].getPlayer() == 1) 
         || (toPromote[1].getRow()==4 && toPromote[1].getPlayer()==1) 
-        || (toPromote[0].getRow()==0 && toPromote[0].getPlayer() == 2)
+        || (initRow==0 && toPromote[0].getPlayer() == 2)
         || (toPromote[1].getRow()==0 && toPromote[1].getPlayer() == 2))
         {
             msBoard.promote(toPromote[1], player1);
