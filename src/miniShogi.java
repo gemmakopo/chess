@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] a = new String[2]; 
     //     a[0] = "-f";
-    //      a[1] = "tieGame.in";
+    //      a[1] = "winOnLastMove.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
@@ -408,11 +408,7 @@ public class miniShogi
             int[] kingDest = new int[2];
             String p = "";
 
-            if (endPlays == 200) 
-            {
-                System.out.println("Tie game.  Too many moves.");
-                System.exit(0);
-            }
+         
             ArrayList<ArrayList<String>> combinedMoves = msBoard.checkCheckMate(player1, false);
             ArrayList<String> checked = combinedMoves.get(0);
             ArrayList<String> blockedMoves = combinedMoves.get(1);
@@ -480,12 +476,21 @@ public class miniShogi
                 {
                     System.out.println(t);
                 }
-
+                if (endPlays == 200) 
+                {
+                    System.out.println("Tie game.  Too many moves.");
+                    System.exit(0);
+                }
             }
             player1=!player1;
             Scanner scanner = new Scanner(System.in);
             if (player1) 
             {
+                if (endPlays == 200) 
+                {
+                    System.out.println("Tie game.  Too many moves.");
+                    System.exit(0);
+                }
                 System.out.print("lower> ");
                 p1Input = null;
                 if(!fileVersion)
