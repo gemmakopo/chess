@@ -56,8 +56,9 @@ public class board {
         for (int i = 0; i< h.size(); i++)
         {
             piece p;
+            boolean isWrong = false;
             Utils.InitialPosition d = h.get(i);
-            if (Pattern.compile("[+][K,k,B,b,P,p,R,r,G,g,S,s]").matcher(d.piece).matches())
+            if (Pattern.compile("[+][K,k,B,b,R,r,G,g,S,s]").matcher(d.piece).matches())
             {
                 p = findPiece(d.piece.substring(1));
                 p.setPromoted(true);
@@ -66,13 +67,52 @@ public class board {
             }
             else
             {
-                p = findPiece(d.piece);
+                if(d.piece.equals("+p") && findVal(d.position.substring(1))==4)
+                {
+                    d.piece ="p";
+                    p = findPiece(d.piece);
+                    p.setPieceType("p");
+                    p.setCaptured(true);
+                    this.player2Captured.add(p);
+                    isWrong = true;
+                }
+                else if(d.piece.equals("+P") && findVal(d.position.substring(1))==0)
+                {
+                    d.piece ="P";
+                    p = findPiece(d.piece);
+                    p.setPieceType("P");
+                    p.setCaptured(true);
+                    this.player1Captured.add(p);
+                    isWrong = true;
+                }
+                else  
+                {
+                    if(d.piece.equals("+p"))
+                    {
+                        p=pawn1;
+                        p.setPieceType("+p");
+                        p.setPromoted(true);
+                    }
+                    else if(d.piece.equals("+P"))
+                    {
+                        p=pawn2;
+                        p.setPieceType("+P");
+                        p.setPromoted(true);
+                    }
+                    else
+                    {
+                        p = findPiece(d.piece);
+                    }
+                }
             }
-            
+            if(!isWrong)
+            {
             p.setColumn(findVal(d.position.substring(0, 1)));
             p.setRow(findVal(d.position.substring(1)));
             currentlyActive.add(p);
             gameBoard[p.getColumn()][p.getRow()] = p;
+            }
+        
         }
     }
     public piece findPiece(String pType)
