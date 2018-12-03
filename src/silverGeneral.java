@@ -27,6 +27,10 @@ public class silverGeneral extends piece {
         {
             return false;
         }
+        if(c==1 && r == 2)
+        {
+            int h = 9;
+        }
         if (c < 0 || c > 4 || r < 0 || r > 4) 
         {
             return false;
@@ -43,9 +47,9 @@ public class silverGeneral extends piece {
             } 
             else 
             {
-                if ((c == column && r == row + 1)
-                        || ((c == column + 1 || c == column - 1) && (r == row + 1 || r == row - 1))
-                        || (r == row && (c == column + 1 || c == column - 1))) 
+                if ((c == column && (r == row + 1||r==row-1))
+                        || ((c == column + 1) && (r == row + 1 || r == row))
+                        || ((c==column-1) && (r==row+1||r==row))) 
                 {
                     return true;
                 }
@@ -63,9 +67,9 @@ public class silverGeneral extends piece {
             } 
             else 
             {
-                if ((c == column && r == row - 1)
-                        || ((c == column + 1 || c == column - 1) && (r == row + 1 || r == row - 1))
-                        || (r == row && (c == column + 1 || c == column - 1))) 
+                if ((c == column && (r == row - 1||r==row+1))
+                        || ((c == column - 1) && (r == row - 1 || r == row))
+                        || ((c==column+1) && (r==row-1||r==row))) 
                 {
                     return true;
                 }

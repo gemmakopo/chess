@@ -21,7 +21,7 @@ public class miniShogi
     public static void main(String[] args) throws Exception{
     //    String[] a = new String[2]; 
     //     a[0] = "-f";
-    //      a[1] = "promotedSilverPromotion.in";
+    //      a[1] = "promotedSilverMoves.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {
