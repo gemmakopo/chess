@@ -24,6 +24,9 @@ public class miniShogi
 
     public static void main(String[] args) throws Exception{
  
+        // String[] a = new String[2];
+        // a[0] = "-f";
+        // a[1] = "manyWaysOutOfCheck.in";
         if(0 < args.length)
             if (args[0].equals("-i"))
             {

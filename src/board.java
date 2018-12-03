@@ -435,6 +435,10 @@ public class board {
                     createdMoveList.add("move "+ getColumnVal(rook1.getColumn())+ Integer.toString(rook1.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
                 }
             }
+            // for(int n =0; n<player2Captured.size(); n++)
+            // {
+            //     createdMoveList.add("drop "+ player2Captured.get(n).getOriginalType() + " " +getColumnVal(c)+Integer.toString(r+1));
+            // }
         } 
         else
         {
@@ -462,6 +466,10 @@ public class board {
                     createdMoveList.add("move "+ getColumnVal(rook2.getColumn())+ Integer.toString(rook2.getRow()+1) +" "+getColumnVal(c)+Integer.toString(r+1));
                 }
             }
+            // for(int n =0; n<player1Captured.size(); n++)
+            // {
+            //     createdMoveList.add("drop "+ player1Captured.get(n).getOriginalType() + " " +getColumnVal(c)+Integer.toString(r+1));
+            // }
         
         }
         return createdMoveList;
@@ -493,8 +501,14 @@ public class board {
                             tempToBlock = createMoveList(player1, c, j);
                             for(String temp: tempToBlock){
                                 toBlock.add(temp);
+                            }    
+                        }
+                        for(int j = r; j<i-1; j++)
+                        {
+                            for(int n =0; n<player1Captured.size(); n++)
+                            {
+                                toBlock.add("drop "+ player1Captured.get(n).getOriginalType().toLowerCase() + " " +getColumnVal(c)+Integer.toString(j));
                             }
-                            
                         }
                     }
                     else
@@ -504,6 +518,13 @@ public class board {
                             tempToBlock = createMoveList(player1, c, j);
                             for(String temp: tempToBlock){
                                 toBlock.add(temp);
+                            }
+                        }
+                        for(int j = i+1+1; j<=r; j++)
+                        {
+                            for(int n =0; n<player1Captured.size(); n++)
+                            {
+                                toBlock.add("drop "+ player1Captured.get(n).getOriginalType().toLowerCase() + " " +getColumnVal(c)+Integer.toString(j));
                             }
                         }
                            
@@ -523,6 +544,13 @@ public class board {
                             }
                             
                         }
+                        for(int j = c; j<i-1; j++)
+                        {
+                            for(int n =0; n<player2Captured.size(); n++)
+                            {
+                                toBlock.add("drop "+ player2Captured.get(n).getOriginalType().toLowerCase() + " " +getColumnVal(j)+Integer.toString(r));
+                            }
+                        }
                     }
                     else
                     {
@@ -531,6 +559,13 @@ public class board {
                             tempToBlock = createMoveList(player1, j, r);
                             for(String temp: tempToBlock){
                                 toBlock.add(temp);
+                            }
+                        }
+                        for(int j = i+1+1; j<=c; j++)
+                        {
+                            for(int n =0; n<player2Captured.size(); n++)
+                            {
+                                toBlock.add("drop "+ player2Captured.get(n).getOriginalType().toLowerCase() + " " +getColumnVal(j)+Integer.toString(r));
                             }
                         }
                            
